@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <title>Britehouse Automotive</title>
+    <style type="text/css">
+        @charset "UTF-8";
+
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide {
+            display: none !important;
+        }
+
+        ng\:form {
+            display: block;
+        }
+
+        .ng-animate-block-transitions {
+            transition: 0s all !important;
+            -webkit-transition: 0s all !important;
+        }
+
+        .ng-hide-add-active, .ng-hide-remove {
+            display: block !important;
+        }
+    </style>
+    <script src="//static.codepen.io/assets/editor/live/console_runner-ce3034e6bde3912cc25f83cccb7caa2b0f976196f2f2d52303a462c826d54a73.js"></script>
+    <script src="//static.codepen.io/assets/editor/live/css_live_reload_init-890dc39bb89183d4642d58b1ae5376a0193342f9aed88ea04330dc14c8d52f55.js"></script>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex">
+ <link rel="shortcut icon" type="image/x-icon" href="fonts/b.png">
+    <link rel="mask-icon" type="" href="//static.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111">
+    <link rel="canonical" href="https://codepen.io/brian-baum/pen/BqEyL">
+
+    <link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet prefetch" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <style class="cp-pen-styles"></style>
+</head>
+<body>
+    <div class="global-wrapper" style="background: lightblue; width: 100% ; " ng-app="myApp">
+
+        <!-- nav section -->
+        <nav class="navbar navbar-default" style="background: #444" ng-controller="navCtrl">
+            <div class="container-fluid">
+                <div class="nav-header">
+                    <a href="#" class="navbar-brand hidden-xs" style="font-weight:bold; font-size: 50px; color: #eee;">Britehouse.</a>
+                    <ul class="nav navbar-nav">
+                        <li ng-repeat="navLink in nav.navItems" ng-class="{active : $index === nav.selectedIndex}">
+                            <a class="text-center"  style="font-weight: bold;" ng-click="nav.navClick($index)" ng-href="#/{{navLink}}">{{navLink}}</a>
+                        </li>
+                    </ul>
+                    <a href="#" class="navbar-brand hidden-xs" style="font-weight:bold; margin-left: 15%; font-size: 30px;">Automotive</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="row panel panel-primary" style="background: lightblue;" ng-controller="homeCtrl">
+                <div class="panel-heading">
+                    <h2 class="panel-title" style="color: #000000a6; font-weight: bold;">Britehouse Automotive Contacts</h2>
+                </div>
+
+
+                <!--     contact list   	 -->
+                <div class="col-xs-5 panel-body" style="background: lightblue">
+                    <ul class="list-group">
+                        <li class="list-group-item" style="background: #428bca3d">
+                            <h4 style="font-weight: bold;">Contacts List:</h4>
+                            <input class="form-control" style="background-color: #f5f5f5;" placeholder="Seach Your Contacts" type="text" ng-model="searchText">
+                            <contact class="list-group-item" style="font-weight: bold; background-color: #f5f5f5;" ng-repeat="contact in contacts | orderBy: 'name' | filter: searchText "></contact>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--   ng-view below       -->
+                <div class="col-xs-7">
+                    <div class="list-group panel-body">
+                        <div ng-view></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script type="text/ng-template" id="default.html">
+            <div class="alert alert-success text-center" ng-class="{hidden : !removed}"> {{removed}}</div>
+            <div style="background: #428bca3d; font-weight: bold;" class="list-group-item text-center">Select a Contact To View</div>
+        </script>
+        <script type="text/ng-template" id="contact_info.html">
+            <div class="list-group-item" style="background:#428bca3d">
+                <h3 style="font-weight: bold;" class="text-center">{{currentContact.name}}</h3>
+                <p>Phone: {{currentContact.phone}}</p>
+                <p>Email: <a ng-href="{{currentContact.email}}">{{currentContact.email}}</a></p>
+                <p>Address: <a ng-href="{{currentContact.url}}">{{currentContact.url}}</a></p>
+                <p>Notes:</p>
+                <p class="well well-lg">{{currentContact.notes}}</p>
+
+                <a ng-href="#/edit/{{contacts.indexOf(currentContact)}}">
+                    <button style="background: #4440; font-weight:bold;" class="btn btn-default">
+                        <span class="glyphicon glyphicon-pencil"></span><span> - Edit Contact</span>
+                    </button>
+                </a>
+
+                <a href="#/">
+                    <button style="background: #4440; font-weight:bold;" class="btn btn-default" ng-click="removeContact(currentContact)">
+                        <span class="glyphicon glyphicon-remove"></span><span> - Remove Contact</span>
+                    </button>
+                </a>
+            </div>
+        </script>
+        <script type="text/ng-template" id="contact_form.html">
+            <div ng-controller="addContactCtrl">
+                <div class="list-group-item" style="background: #428bca3d">
+
+                    <div class="form-group">
+
+                        <p style="font-weight: bold;"><label for="name">Contact Name: </label> <input id="name" style="background-color: #f5f5f5;" class="form-control" type="text" ng-model="currentContact.name"> </p>
+                        <p><label for="email">Contact Email:</label> <input id="email" class="form-control" style="background-color: #f5f5f5;" type="text" ng-model="currentContact.email"> </p>
+                        <p><label for="phone">Contact Phone:</label> <input id="phone" class="form-control" style="background-color: #f5f5f5;" type="text" ng-model="currentContact.phone"> </p>
+                        <p><label for="url">Contact Address:</label> <input id="url" class="form-control" style="background-color: #f5f5f5;" type="text" ng-model="currentContact.url"> </p>
+                        <p><label for="notes">Contact Notes:</label></p>
+                        <textarea class="form-control" id="notes" rows="3" style="background-color: #f5f5f5;" ng-model="currentContact.notes"></textarea>
+                    </div>
+                    
+                    <a ng-if="path === '/Add' " ng-href="#/contact-info/{{ contacts.length - 1 }}" ng-click="addContact()">
+                        <button style="background: #4440; font-weight:bold;" class="btn btn-default">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            <span> Add New Contact</span>
+                        </button>
+                    </a>
+
+                    <a ng-if="path !== '/Add'" ng-href="#/contact-info/{{index}}">
+                        <button style="background: #4440; font-weight:bold;" class="btn btn-default">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            <span> Save Contact</span>
+                        </button>
+                    </a>
+
+                    <a href="#/">
+                        <button style="background: #4440; font-weight:bold;" class="btn btn-default">
+                            <span class="glyphicon glyphicon-remove"></span><span>  Cancel</span>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </script>
+        <script type="text/ng-template" id="contact.html">
+            <a ng-href="#/contact-info/{{contacts.indexOf(contact)}}">
+                {{contact.name}}
+            </a>
+        </script>
+    </div>
+    <script src="//static.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-route.min.js"></script>
+    <script>
+var myApp = angular.module('myApp', ['ngRoute'])
+
+.config(function ($routeProvider, $locationProvider){
+  $routeProvider
+    .when('/Home', {
+      templateUrl: 'default.html',
+    })
+    .when('/contact-info/:contact_index', {
+      templateUrl: 'contact_info.html',
+      controller: 'contactInfoCtrl'
+    })
+    .when('/Add', {
+      templateUrl: 'contact_form.html',
+      controller: 'addContactCtrl'
+    })
+    .when('/edit/:contact_index', {
+      templateUrl: 'contact_form.html',
+      controller: 'editContactCtrl'
+    })
+    .otherwise({ redirectTo: '/Home' });
+})
+
+
+.controller('navCtrl', function ($scope) {
+  $scope.nav = {
+    navItems: ['Home', 'Add'],
+    selectedIndex: 0,
+    navClick: function ($index) {
+      $scope.nav.selectedIndex = $index;
+    }
+  };
+})
+
+.controller('homeCtrl', function ($scope, ContactService){
+  $scope.contacts = ContactService.getContacts();
+
+  $scope.removeContact = function (item) {
+    var index = $scope.contacts.indexOf(item);
+    $scope.contacts.splice(index, 1);
+    $scope.removed = 'Contact successfully removed.';
+  };
+
+})
+
+.controller('contactInfoCtrl', function ($scope, $routeParams){
+  var index = $routeParams.contact_index;
+  $scope.currentContact = $scope.contacts[index];
+})
+
+.controller('addContactCtrl', function ($scope, $location) {
+  $scope.path = $location.path();
+
+  $scope.addContact = function () {
+    var contact = $scope.currentContact;
+    contact.id = $scope.contacts.length;
+    $scope.contacts.push(contact);
+  };
+
+})
+
+.controller('editContactCtrl', function ($scope, $routeParams){
+  $scope.index = $routeParams.contact_index;
+  $scope.currentContact = $scope.contacts[$scope.index];
+})
+
+.directive('contact', function () {
+  return {
+    restrict: 'E',
+    replace: true,
+    templateUrl: 'contact.html'
+  }
+})
+
+.factory('ContactService', [function () {
+  var factory = {};
+
+  factory.getContacts = function () {
+    return contactList;
+  }
+
+  var contactList = [
+    {id: 0, name: 'Hanno Pienaar', email: 'hanno@britehouse.com', phone: '012-456-7890', url: '-------', notes: 'Senior Developer.'},
+    { id: 1, name: 'Frik Erasmus', email: 'frik@britehouse.com', phone: '012-456-7890', url: '-------', notes: 'Development Manager.' },
+    { id: 2, name: 'Chris vd Heever', email: 'chris@britehouse.com', phone: '012-456-7890', url: '-------', notes: 'Project Manager.' },
+    { id: 3, name: 'Michelle Harmse', email: 'michelle@britehouse.com', phone: '012-456-7890', url: '-------', notes: 'Database Administrator.' },
+    { id: 4, name: 'Annalie Stelm', email: 'annalie@britehouse.com', phone: '012-456-7890', url: '-------', notes: 'UI Developer.' },
+    { id: 5, name: 'Marcel Harmse', email: 'marcel@britehouse.com', phone: '012-456-7890', url: '-------', notes: 'Database Administrator.' },
+    { id: 6, name: 'Roy vd Wat', email: 'roy@britehouse.com', phone: '012-456-7890', url: '-------', notes: 'Boss.' },
+    { id: 7, name: 'Nico Elm', email: 'nico@britehouse.com', phone: '012-456-7890', url: '-------', notes: 'Senior Report Developer.' },
+    { id: 8, name: 'Bongani Twalla', email: 'bongani@britehouse.com', phone: '012-456-7890', url: '-------', notes: 'Cleaner' },
+    { id: 9, name: 'Paul Klaynhans', email: 'paul@britehouse.com', phone: '012-456-7890', url: '-------', notes: 'Development Manager.' },
+    { id: 10, name: 'Storm Moll', email: 'storm@britehouse.com', phone: '012-456-7890', url: '-------', notes: 'PA.' },
+    { id: 11, name: 'Kobus Visagie', email: 'kobus@britehouse.com', phone: '012-456-7890', url: '-------', notes: 'CEO.' },
+  ];
+
+  return factory;
+}]);
+    </script>
+</body>
+</html>
+
