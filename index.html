@@ -35,9 +35,7 @@
     <style class="cp-pen-styles"></style>
 </head>
 <body>
-    <div class="global-wrapper" style="background: lightblue; width: 100% ; " ng-app="myApp">
-
-        <!-- nav section -->
+    <div class="global-wrapper"  style="background: lightblue; width: 100%;"   ng-app="myApp">
         <nav class="navbar navbar-default" style="background: #444" ng-controller="navCtrl">
             <div class="container-fluid">
                 <div class="nav-header">
@@ -57,9 +55,6 @@
                 <div class="panel-heading">
                     <h2 class="panel-title" style="color: #000000a6; font-weight: bold;">Britehouse Automotive Contacts</h2>
                 </div>
-
-
-                <!--     contact list   	 -->
                 <div class="col-xs-5 panel-body" style="background: lightblue">
                     <ul class="list-group">
                         <li class="list-group-item" style="background: #428bca3d">
@@ -69,8 +64,6 @@
                         </li>
                     </ul>
                 </div>
-
-                <!--   ng-view below       -->
                 <div class="col-xs-7">
                     <div class="list-group panel-body">
                         <div ng-view></div>
@@ -91,13 +84,11 @@
                 <p>Address: <a ng-href="{{currentContact.url}}">{{currentContact.url}}</a></p>
                 <p>Notes:</p>
                 <p class="well well-lg">{{currentContact.notes}}</p>
-
                 <a ng-href="#/edit/{{contacts.indexOf(currentContact)}}">
                     <button style="background: #4440; font-weight:bold;" class="btn btn-default">
                         <span class="glyphicon glyphicon-pencil"></span><span> - Edit Contact</span>
                     </button>
                 </a>
-
                 <a href="#/">
                     <button style="background: #4440; font-weight:bold;" class="btn btn-default" ng-click="removeContact(currentContact)">
                         <span class="glyphicon glyphicon-remove"></span><span> - Remove Contact</span>
@@ -108,9 +99,7 @@
         <script type="text/ng-template" id="contact_form.html">
             <div ng-controller="addContactCtrl">
                 <div class="list-group-item" style="background: #428bca3d">
-
                     <div class="form-group">
-
                         <p style="font-weight: bold;"><label for="name">Contact Name: </label> <input id="name" style="background-color: #f5f5f5;" class="form-control" type="text" ng-model="currentContact.name"> </p>
                         <p><label for="email">Contact Email:</label> <input id="email" class="form-control" style="background-color: #f5f5f5;" type="text" ng-model="currentContact.email"> </p>
                         <p><label for="phone">Contact Phone:</label> <input id="phone" class="form-control" style="background-color: #f5f5f5;" type="text" ng-model="currentContact.phone"> </p>
@@ -118,21 +107,18 @@
                         <p><label for="notes">Contact Notes:</label></p>
                         <textarea class="form-control" id="notes" rows="3" style="background-color: #f5f5f5;" ng-model="currentContact.notes"></textarea>
                     </div>
-                    
                     <a ng-if="path === '/Add' " ng-href="#/contact-info/{{ contacts.length - 1 }}" ng-click="addContact()">
                         <button style="background: #4440; font-weight:bold;" class="btn btn-default">
                             <span class="glyphicon glyphicon-ok"></span>
                             <span> Add New Contact</span>
                         </button>
                     </a>
-
                     <a ng-if="path !== '/Add'" ng-href="#/contact-info/{{index}}">
                         <button style="background: #4440; font-weight:bold;" class="btn btn-default">
                             <span class="glyphicon glyphicon-ok"></span>
                             <span> Save Contact</span>
                         </button>
                     </a>
-
                     <a href="#/">
                         <button style="background: #4440; font-weight:bold;" class="btn btn-default">
                             <span class="glyphicon glyphicon-remove"></span><span>  Cancel</span>
